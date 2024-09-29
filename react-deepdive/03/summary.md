@@ -173,3 +173,82 @@ useContext는 상태 관리가 아닌 상태를 주입해 주는 API이므로 �
 
 <br />
 <br />
+
+### useReducer
+
+state 값을 변경하는 시나리오를 제하적으로 두고 이에 대한 변경을 빠르게 확인할 수 있게 하는 것이 useReducer의 목적
+
+```js
+// sample
+
+// 기본적인 type 형태로 정의
+type State = { count: number };
+type Action = { type: "up" | "down" | "reset", payload?: State };
+
+// 무거운 연산이 포함된 게으른 초기화 함수
+function init(count: State): State {
+  return count;
+}
+
+// 초깃값
+const initialState: State = { count: 0 };
+
+// 앞서 선언한 state와 action을 기반으로 state가 어떻게 변경될지 정의
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "up":
+      return { count: state.count + 1 };
+    case "down":
+      return { count: state.count - 1 > 0 ? state.count - 1 : 0 };
+    case "reset":
+      return init(action.payload || { count: 0 });
+    default:
+      throw new Error(`unexpected action type: ${action.type}`);
+  }
+}
+```
+
+```js
+// 사용 예시
+
+export default function App() {
+  const [state, dispatcher] = useReducer(reducer, initialState, init);
+
+  function handleUpButtonClick() {
+    dispatcher({ type: "up" });
+  }
+  function handleDownButtonClick() {
+    dispatcher({ type: "down" });
+  }
+  function handleResetButtonClick() {
+    dispatcher({ type: "reset", payload: { count: 1 } });
+  }
+
+  return (
+    <div className="App">
+      <h1>{state.count}</h1>
+      <button onClick={handleUpButtonClick}>+</button>
+      <button onClick={handleDownButtonClick}>-</button>
+      <button onClick={handleResetButtonClick}>reset</button>
+    </div>
+  );
+}
+```
+
+<br />
+
+##### useState, useReducer
+
+useReducer는 useState의 심화 버전이라고 볼 수 있습니다.
+
+둘은 세부 작동과 쓰임에 차이가 있을 뿐,
+결국 클로저를 활용해 값을 가둬 state를 관리한다는 사실에는 변함이 없습니다.
+
+때론 여러 개의 state를 관리하는 것보다 성격이 비슷한 여러 개의 state를 묶어 useReducer로 관리하는 것이 더 효율적일 수 있습니다.
+
+세 번째 인수인 게으른 초기화 함수는 필수 요소는 아니지만 넣어줌으로써
+useState에 함수를 넣은 것과 동일한 이점을 누릴 수 있고, <br />
+추가로 state에 대한 초기화가 필요할 때 reducer에서 이를 재사용할 수 있다는 장점도 있습니다.
+
+<br />
+<br />
