@@ -223,15 +223,6 @@ export default function App() {
   function handleResetButtonClick() {
     dispatcher({ type: "reset", payload: { count: 1 } });
   }
-
-  return (
-    <div className="App">
-      <h1>{state.count}</h1>
-      <button onClick={handleUpButtonClick}>+</button>
-      <button onClick={handleDownButtonClick}>-</button>
-      <button onClick={handleResetButtonClick}>reset</button>
-    </div>
-  );
 }
 ```
 
@@ -249,6 +240,33 @@ useReducer는 useState의 심화 버전이라고 볼 수 있습니다.
 세 번째 인수인 게으른 초기화 함수는 필수 요소는 아니지만 넣어줌으로써
 useState에 함수를 넣은 것과 동일한 이점을 누릴 수 있고, <br />
 추가로 state에 대한 초기화가 필요할 때 reducer에서 이를 재사용할 수 있다는 장점도 있습니다.
+
+<br />
+<br />
+
+### useImperativeHandle
+
+실제 개발 과정에서는 자주 볼 수 없는 훅 <br />
+"Imperative"는 "명령형"이라는 의미로 부모 컴포넌트가 자식 컴포넌트의 인스턴스를 명령형으로 제어할 수 있게 해주는 것
+
+널리 쓰이진 않지만 일부 사용 사례에서 유용하게 활용될 수 있긴 함
+
+- 폼 컴포넌트 <br />
+  사용자가 입력을 완료한 후 '제출' 버튼을 클릭했을 때 입력 필드를 초기화하거나 다른 입력 필드에 포커스를 주고 싶을 때
+- 애니메이션 컴포넌트 <br />
+  버튼 클릭 시 애니메이션을 시작하거나 정지시키는 메서드를 부모가 호출해야 하는 경우
+- 모달 컴포넌트 <br />
+  부모가 조건에 따라 모달을 열거나 닫을 수 있도록 하는 경우
+
+<br />
+<br />
+
+### useLayoutEffect
+
+<br />
+<br />
+
+### useDebugLayout
 
 <br />
 <br />
