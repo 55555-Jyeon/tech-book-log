@@ -284,7 +284,27 @@ useEffect와 달리 useLayoutEffect는 모든 DOM의 변경 후에 동기적으�
 <br />
 <br />
 
-### useDebugLayout
+### useDebugValue
+
+사용자 정의 훅 내부의 내용에 대한 정보를 남길 수 있는 훅
+
+리액트 애플리케이션을 개발하는 과정에서 사용되는데, <br />
+디버깅하고 싶은 정보를 이 훅에다가 사용하면 리액트 개발자 도구에서 볼 수 있으며 <br />
+오직 다른 훅 내부에서만 실행 가능함을 명심해야 합니다.
+
+```js
+// example
+// 현재 시간을 반환하는 사용자 정의 훅
+function useDate() {
+  const date = new Date();
+
+  // useDebugValue로 디버깅 ㅈ어보 기록
+  useDebugValue(date, (date) => `현재 시간: ${date.toISOString()}`);
+  return date;
+}
+```
+
+두 번째 인수로 포매팅 함수를 전달하면 이에 대한 값이 변경됐을 때만 호출되어 포매팅된 값을 노출합니다.
 
 <br />
 <br />
